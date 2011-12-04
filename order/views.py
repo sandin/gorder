@@ -1,6 +1,8 @@
 # coding:utf-8
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.http import Http404
+from django.db.models import Q
 from gorder.order.models import GlassRow, Order
 import datetime
 import logging
@@ -12,7 +14,17 @@ def create(request):
     if request.method == 'GET':
         return render_to_response('order/create.html', {})
     elif request.method == "POST":
+        client = request.POST.get("order-client", "")
+        phone = request.POST.get("order-phone", "0")
+        note = request.POST.get("order-note", "")
+        price = request.POST.get("order-price", "")
+        cash = request.POST.get("order-cash", "")
+        order = Order(client=client, phone=phone, date=datetime.datetime.now(),
+                      price=price, cash=cash, status=0, note=note)
+        logger.info("create a new order")
+        order.save() # create a order
         data = []
+        # get row form POST data
         for i in range(1,1000):
             if not request.POST.has_key('glass-width-'+str(i)):
                 break # end of loop
@@ -35,11 +47,52 @@ def create(request):
                 unitPrice = float(unitPrice)
             extraCost = float(extraCost) if extraCost else 0
             data.append([name, width, height, quantity, rate, unitPrice, rubEdge, extra, extraCost])
+        # fix input data
         data = fixData(data)
-        client
+        saveOrderData(order, data)
+        glassRow = order.glassrow_set.all()
+        return render_to_response('order/createOrderResult.html', locals())
 
-        return render_to_response('order/createResult.html', locals())
+def listOrder(request):
+    orders = Order.objects.filter(~Q(client='jiahe'))
+    total_price = 0
+    subtitle = "订单列表"
+    for o in orders:
+        for row in o.glassrow_set.all():
+            total_price += float(row.price)
+    return render_to_response('order/listOrder.html', locals())
 
+def delete(requset, orderId):
+    try:
+        order = Order.objects.get(pk=orderId)
+        order.delete()
+        return render_to_response('order/delete.html', locals())
+    except Order.DoesNotExist:
+        raise Http404()
+
+def orderDetail(request, orderId):
+    try:
+        order = Order.objects.get(pk=orderId)
+        needToPay = order.price - order.cash
+        lastOrderId = order.id -1
+        nextOrderId = order.id +1
+        return render_to_response('order/orderDetail.html', locals())
+    except Order.DoesNotExist:
+        raise Http404()
+
+# [name, width, height, quantity, rate, unitPrice, rubEdge, extra, extraCost]
+def saveOrderData(order, data):
+    for d in data:
+        if len(d) != 9:
+            raise Exception()
+        row = GlassRow.create(name=d[0], width=d[1], height=d[2],
+                              quantity=d[3], rate=d[4],
+                              unitPrice=d[5], rubEdge=d[6],
+                              extra=d[7], extraCost=d[8],
+                              orderId=order, rubEdgeUnitPrice=1,)
+        logger.info("create a row " + str(row))
+        row.save()
+        
 def fixData(dataList):
     data = []
     lastRow = ['unknown',0,0,0,0,0,'00',"",0]
@@ -65,7 +118,7 @@ def importDataFormCSV(request):
     filename = request.GET['filename']
     importData(filename)
 
-def listOrder(request):
+def listOrder2(request):
     subtitle = "Orders details"
     if request.GET.has_key('month'):
         month = int(request.GET['month'])
@@ -77,7 +130,7 @@ def listOrder(request):
     for o in orders:
         for row in o.glassrow_set.all():
             total_price += float(row.price)
-    return render_to_response('order/listOrder.html', {'orders':orders, 'total_price': total_price, 'subtitle': subtitle})
+    return render_to_response('order/listOrder2.html', {'orders':orders, 'total_price': total_price, 'subtitle': subtitle})
 
 def fixGlassCSV(data):
     newStr = "";
@@ -104,12 +157,12 @@ def fixGlassCSV(data):
     return newStr
 
 def importData(dataStr):
-    CLIENT = "家和-"
+    CLIENT = "家和"
     data = fixGlassCSV(dataStr)
     data = data.strip() 
     lines = data.split("\n")
     lastLine = ""
-    lastOrder = Order.create(CLIENT+"0")
+    lastOrder = Order.create(CLIENT)
     lastOrder.save()
     for i in range(len(lines)):
         l = lines[i]
@@ -118,8 +171,8 @@ def importData(dataStr):
             if not lastLine: # two block line a raw
                 continue
             # block line mean a new order
-            order = Order.create(CLIENT+str(i+1))
-            logger.info("create a new order")
+            order = Order.create(CLIENT)
+            logger.info("create a new order"+str(i+1))
             order.save()
             lastOrder = order
         else:

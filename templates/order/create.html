@@ -91,13 +91,15 @@
 
     <div class="o-f-g-result">
         <p>合计: <span id="order-totle-price">00.00</span> 元 </p>
-        <p>应付金额: <input type="text" class="text order-cash" /> 元 </p>
-        <p>已付金额: <input type="text" class="text order-cash" /> 元 </p>
+        <p>应付金额: <input type="text" name="order-price" class="text order-cash" /> 元 </p>
+        <p>已付金额: <input type="text" name="order-cash" class="text order-cash" /> 元 </p>
         <input type="submit" value="仅保存" />
         <input type="submit" value="确认订单" />
     </div>
 
 </form>
+
+<br />
 
 {% endblock %}
 {% block javascript %}

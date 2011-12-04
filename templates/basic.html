@@ -10,7 +10,9 @@
 <body>
 <div id="wrapper">
     <div id="header">
-        {% block header %}{% endblock %}
+        {% block header %}
+        {% include "header.html" %}
+        {% endblock %}
     </div><!-- /header -->
     <div id="content">
         {% block content %}{% endblock %}

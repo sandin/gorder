@@ -1,39 +1,53 @@
 {% extends "basic.html" %}
 
-
 {% block content %}
 <h2 style="margin:10px;">{{ subtitle }}</h2>
-<table class="order-table" width="70%">
+<table class="order-table" width="100%">
     <tr>
-        <th width="28">类型</th>
+        <th width="25">ID</th>
+        <th>客户名</th>
         <th>名称</th>
         <th>尺寸</th>
         <th>数量</th>
         <th>单价</th>
         <th>金额</th>
-        <th>磨边</th>
+        <th width="15">磨</th>
         <th>磨边费</th>
-        <th>小计(元)</th>
+        <th>额外</th>
+        <th>额外费</th>
+        <th>小计</th>
+        <th>共计</th>
+        <th>已付</th>
+        <th>操作</th>
     </tr>
 {% if not orders %}
-    <tr><td colspan="10">no order</td></tr>
+    <tr><td colspan="16">no order</td></tr>
 {% endif %}
 {% for o in orders %}
     {% for item in o.glassrow_set.all %}
     <tr{% if forloop.last %} class="last"{% endif %}>
-        <td>{% if not item.glassPrice %}来料{% else %}下料{% endif %}</td>
+        <td>{% if forloop.first %}{{ o.id }}{% endif %}</td>
+        <td>{% if forloop.first %}{{ o.client|default:"-" }}{% endif %}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.width }} x {{ item.height }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.unitPrice|floatformat:"0" }}</td>
-        <td>{% if not item.glassPrice %}-{% else %}{{ item.glassPrice|floatformat:"2" }}{% endif %}</td>
+        <td>{% if not item.glassPrice %}-{% else %}{{ item.glassPrice|floatformat:"0" }}{% endif %}</td>
         <td>{{ item.rubEdge }}</td>
-        <td>{{ item.rubEdgeCost|floatformat:"2"}}</td>
-        <td>{{ item.price|floatformat:"2" }}</td>
+        <td>{{ item.rubEdgeCost|floatformat:"0"}}</td>
+        <td>{{ item.extra|default:"-" }}</td>
+        <td>{{ item.extraCost|floatformat:"0"}}</td>
+        <td>{{ item.price|floatformat:"0" }}</td>
+        <td>{% if forloop.last %}{{ o.price|floatformat:"0" }}{% endif %}</td>
+        <td>{% if forloop.last %}{{ o.cash|floatformat:"0" }}{% endif %}</td>
+        <td>{% if forloop.last %}
+            <a href="{% url order.views.orderDetail o.id %}" title="" target="_block">查看</a>
+            <a href="{% url order.views.delete o.id %}" title="" target="_block">删除</a>
+            {% endif %}</td>
     </tr>
     {% endfor %}
 {% endfor %}
-<tr><td colspan="10" style="border-top:2px solid #000;text-align:right;font-size:15px;"><b>共计: <span>{{ total_price|floatformat:"2" }}</span> 元</b></td></tr>
+<tr><td colspan="16" style="border-top:2px solid #000;text-align:right;font-size:15px;"><b>共计: <span>{{ total_price|floatformat:"2" }}</span> 元</b></td></tr>
 </table>
 <br />
 {% endblock %}

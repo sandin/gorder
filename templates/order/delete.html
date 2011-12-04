@@ -1,0 +1,26 @@
+{% extends "basic.html" %}
+
+{% block content %}
+{% if error %}
+<h2> 删除订单出错: </h2>
+<p> {{ error }} </p>
+{% else %}
+<h1> 成功删除订单:</h1>
+<p>订单号: {{ order.id }}</p>
+<p>客户名: {{ order.client }} </p> 
+<ul>
+{% for item in order.glassrow_set.all %}
+<li>
+{{ item.name }} : {{ item.width }} x {{ item.height }} x {{ item.quantity }}
+</li>
+{% endfor %}
+</ul>
+
+<br />
+    
+{% endif %}
+
+
+{% endblock %}
+
+

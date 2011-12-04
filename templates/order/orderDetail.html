@@ -1,0 +1,94 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+<div>
+    <a href="{% url order.views.orderDetail lastOrderId %}"><< 上一单</a>
+    <a href="{% url order.views.orderDetail nextOrderId %}">下一单 >></a>
+</div>
+<h2>订单{{ order.id }} - {{ order.status }}</h2>
+
+<div class="order-detail">
+   
+    <div class="clearfix">
+        <p style="width:200px;float:left"> 客户: {{ order.client|default:"-" }} {{ order.phone|default:"-" }} </p>
+        <p style="width:200px;float:right;text-align:right"> 日期: {{ order.date|date:"Y-m-d" }} </h1>
+    </div>
+    <table id="order-f-g" width="100%" class="order-table">
+        <tr>
+            <th width="100">名称</th>
+            <th>规格</th>
+            <th>数量</th>
+            <th>损耗</th>
+            <th>单价</th>
+            <th>金额</th>
+            <th>磨边</th>
+            <th>磨边费</th>
+            <th>额外</th>
+            <th>额外费</th>
+            <th width="80">小计</th>
+        </tr>
+      
+       {% for item in order.glassrow_set.all %}
+        <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.width }} x {{ item.height }}</td>
+        <td>{{ item.quantity }} 块</td>
+        <td>{{ item.rate }}</td>
+        <td>{{ item.unitPrice|floatformat:"0" }}</td>
+        <td>{% if not item.glassPrice %}-{% else %}{{ item.glassPrice|floatformat:"2" }}{% endif %}</td>
+        <td>{{ item.rubEdge }}</td>
+        <td>{{ item.rubEdgeCost|floatformat:"2"}}</td>
+        <td>{{ item.extra|default:"-" }}</td>
+        <td>{{ item.extraCost|floatformat:"2" }}</td>
+        <td>{{ item.price|floatformat:"2" }}</td>
+        </tr>
+        {% endfor %}
+
+        <!--
+        <tr>
+            <td>安装费</td>
+            <td>-</td>
+            <td>2.2 m2</td>
+            <td>-</td>
+            <td>30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>66</td>
+        </tr>
+        <tr>
+            <td>配件</td>
+            <td>-</td>
+            <td>2 个</td>
+            <td>-</td>
+            <td>1</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>2</td>
+        </tr>
+        -->
+    </table>
+    <p> 备注: {{ order.note|default:"无" }} </p>
+
+    <div class="o-f-g-result">
+        <p>共计: <b>{{order.price}}</b> 元 </p>
+        <p>已付: <b>{{order.cash}}</b> 元 </p>
+        <p>应付金额: <b>{{needToPay}}</b> 元 </p>
+    </div>
+
+    <div>
+        <a href="{% url order.views.delete order.id %}" title="delete">删除订单</a>
+    </div>
+</div><!-- /order-detail -->
+
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/static/js/all.js"></script>
+{% endblock %}

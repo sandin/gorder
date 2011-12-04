@@ -1,0 +1,28 @@
+{% extends "basic.html" %}
+
+{% block content %}
+{% if error %}
+<h2> 创建订单出错: </h2>
+<p> {{ error }} </p>
+{% else %}
+<h1> 成功创建订单: </h1> 
+<ul>
+{% for item in glassRow %}
+<li>
+{{ item.name }} : {{ item.width }} x {{ item.height }} x {{ item.quantity }}
+</li>
+{% endfor %}
+</ul>
+<p> 金额: {{ order.price }} </p>
+<p> 已收: {{ order.cash }} </p>
+
+<br />
+<p>查看订单详情: <a href="/order/{{order.id}}" title="">订单{{order.id}}</a></p>
+
+    
+{% endif %}
+
+
+{% endblock %}
+
+

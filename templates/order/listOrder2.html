@@ -1,0 +1,38 @@
+{% extends "basic.html" %}
+
+{% block content %}
+<h2 style="margin:10px;">{{ subtitle }}</h2>
+<table class="order-table" width="70%">
+    <tr>
+        <th width="28">类型</th>
+        <th>名称</th>
+        <th>尺寸</th>
+        <th>数量</th>
+        <th>单价</th>
+        <th>金额</th>
+        <th>磨边</th>
+        <th>磨边费</th>
+        <th>小计(元)</th>
+    </tr>
+{% if not orders %}
+    <tr><td colspan="10">no order</td></tr>
+{% endif %}
+{% for o in orders %}
+    {% for item in o.glassrow_set.all %}
+    <tr{% if forloop.last %} class="last"{% endif %}>
+        <td>{% if not item.glassPrice %}来料{% else %}下料{% endif %}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.width }} x {{ item.height }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.unitPrice|floatformat:"0" }}</td>
+        <td>{% if not item.glassPrice %}-{% else %}{{ item.glassPrice|floatformat:"2" }}{% endif %}</td>
+        <td>{{ item.rubEdge }}</td>
+        <td>{{ item.rubEdgeCost|floatformat:"2"}}</td>
+        <td>{{ item.price|floatformat:"2" }}</td>
+    </tr>
+    {% endfor %}
+{% endfor %}
+<tr><td colspan="10" style="border-top:2px solid #000;text-align:right;font-size:15px;"><b>共计: <span>{{ total_price|floatformat:"2" }}</span> 元</b></td></tr>
+</table>
+<br />
+{% endblock %}
