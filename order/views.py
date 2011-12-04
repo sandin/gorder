@@ -1,9 +1,8 @@
 # coding:utf-8
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.http import Http404
 from django.db.models import Q
-from gorder.order.models import GlassRow, Order
+from django.http import Http404
+from django.shortcuts import render_to_response
+from order.models import GlassRow, Order
 import datetime
 import logging
 
