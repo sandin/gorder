@@ -1,0 +1,63 @@
+/** 
+* global.css
+* 
+* @author lds <lds2012@gmail.com>
+* @version %Id%
+* @date 2010-00-00
+*/
+/*{{{ reset */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td,div{margin:0;padding:0;}body,button,input,select,textarea{font:12px/1.5 tahoma,arial,\5b8b\4f53,sans-serif;}h1,h2,h3,h4,h5,h6{font-size:100%;}address,cite,dfn,em,var{font-style:normal;}code,kbd,pre,samp{font-family:courier new,courier,monospace;}small{font-size:12px;}ul,ol{list-style:none;}a{text-decoration:none;}a:hover{text-decoration:underline;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}legend{color:#000;}fieldset,img{border:0;}button,input,select,textarea{font-size:100%;}table{border-collapse:collapse;border-spacing:0;}
+/*}}}*/
+/* grid {{{  
+------------------*/
+.grid_5x { float: left; width: 185px; }
+.grid_19x { float: right; width: 752px; }
+
+.grid_6x { float: left; width: 230px; }
+.grid_18x { float: right; width: 720px; }
+
+.grid_11x { float: left; width: 454px; }
+.grid_13x { float: right; width: 488px; }
+
+.grid_9x { float: right; width: 352px; }
+.grid_15x { float: left; width: 595px; }
+
+.grid_8x { float: left; width: 311px; }
+.grid_16x { float: right; width: 625px; }
+
+.grid_5x, .grid_19x, .grid_11x, .grid_13x,
+.grid_9x, .grid_15x, .grid_8x, .grid_16x
+{
+    /*overflow: hidden;*/
+}
+/*}}}*/
+/* base {{{ 
+------------------*/
+body {
+    color: #666;
+}
+
+/* TODO: 链接颜色和文字颜色区别不大,建议更改 */
+a:link { color: #6699cc; text-decoration: none; }
+a:visited { color: #6699cc;/*change it*/ text-decoration: none; }
+a:hover { color: #d93939; text-decoration: none; }
+a:active { color: #d93939; text-decoration: none;}
+
+h1,h2,h3,h4,h5,h6 {}
+h1 {font-size: 18px;}
+h2 {font-size: 17px;}
+h3 {font-size: 16px;}
+h4 {font-size: 15px;}
+h5 {font-size: 14px;}
+h6 {font-size: 13px;}
+
+em {color:red;}
+
+/* clear both */
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden }
+.clearfix { zoom: 1; display: inline-block; _height: 1px }
+*html .clearfix { height: 1% }
+*+html .clearfix { height: 1% }
+.clearfix { display: block }
+/*}}}*/
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 enc=utf-8 :*/

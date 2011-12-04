@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link type="text/css" rel="stylesheet" href="/static/css/reset.css" /> 
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" /> 
+{% block css %}{% endblock %}
+<title>{% block title %}Order{% endblock %}</title>
+</head>
+<body>
+<div id="wrapper">
+    <div id="header">
+        {% block header %}{% endblock %}
+    </div><!-- /header -->
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div><!-- /content -->
+    <div id="footer">
+        {% block footer %}{% endblock %}
+    </div><!-- /footer -->
+</div><!-- /wrapper -->
+{% block javascript %}{% endblock %}
+</body>
+</html>

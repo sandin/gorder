@@ -1,0 +1,92 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+data: {{ data }}
+
+<h1>订单 (2011-10-29)</h1>
+    <table id="order-f-g" width="100%" class="order-table">
+        <tr>
+            <th>名称</th>
+            <th>长(mm)</th>
+            <th>宽(mm)</th>
+            <th>数量</th>
+            <th>损耗</th>
+            <th>单价</th>
+            <th>磨边</th>
+            <th>磨边费</th>
+            <th>额外</th>
+            <th>额外费</th>
+            <th>平方</th>
+            <th>安装 <input type="checkbox" /></th>
+            <th width="100">金额</th>
+        </tr>
+        {% for i in 012345|make_list %}
+        <tr>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="o-f-g-result">
+        小计: <span id="o-f-g-totlePrice">00.00</span> 元
+    </div>
+
+    <h2>安装 <a href="#" id="o-f-i-addRow">+</a> <a href="#" id="o-f-i-removeRow">-</a></h2>
+    <table id="order-f-i" width="100%" class="order-table">
+        <tr>
+            <th width="300">名称</th>
+            <th width="200">面积</th>
+            <th>单价</th>
+            <th width="100">金额</th>
+        </tr>
+        <tr>
+            <td>安装费</td>
+            <td class="o-f-g-quantity">0.0</td>
+            <td><input type="text" class="o-f-g-uPrice text" value="30" /></td>
+            <td id="order-f-i-totlePrice" class="o-f-g-price">-</td>
+        </tr>
+    </table>
+     <div class="o-f-g-result">
+        小计: <span id="o-f-i-totlePrice">00.00</span> 元
+    </div>
+
+    <h2>配件 <a href="#" id="o-f-p-addRow" alt="添加">+</a> <a href="#o" class="o-f-p-removeRow">-</a></h2>
+    <table id="order-f-p" width="100%" class="order-table">
+        <tr>
+            <th width="300">名称</th>
+            <th width="200">数量</th>
+            <th>单价</th>
+            <th width="100">金额</th>
+        </tr>
+        <tr>
+            <td><input type="text" class="o-f-g-name text" /></td>
+            <td><input type="text" class="o-f-g-quantity text"/></td>
+            <td><input type="text" class="o-f-g-uPrice text" /></td>
+            <td class="o-f-g-price">-</td>
+        </tr>
+    </table>
+    <div class="o-f-g-result">
+        小计: <span id="o-f-p-totlePrice">00.00</span> 元
+    </div>
+
+    <p> <label>客户名称:</label> <input type="text" name="order-client" /> </p>
+    <p> <label>联系方式:</label> <input type="text" name="order-phone" /> </p>
+    <p> <label>取货日期:</label> <input type="text" /> (安装或取货的时间) <br /> </p>
+    <p> <label>备注说明:</label> <input type="text" name="order-note" style="width:300px" /> </p>
+
+    <br /><br /><hr />
+
+    <div class="o-f-g-result">
+        <p>合计: <span id="order-totle-price">00.00</span> 元 </p>
+        <p>应付金额: <input type="text" class="text order-cash" /> 元 </p>
+        <p>已付金额: <input type="text" class="text order-cash" /> 元 </p>
+        <input type="submit" value="仅保存" />
+        <input type="submit" value="确认订单" />
+    </div>
+
+</form>
+
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/static/js/all.js"></script>
+{% endblock %}

@@ -1,0 +1,64 @@
+#wrapper {
+    width: 960px;
+    margin: 0 auto;
+}
+.hide {
+    display: none;
+}
+
+.order-table {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+input.text {
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+.order-table .text:focus {
+    border: 1px solid orange;
+}
+
+.order-table th,
+.order-table td
+{
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 5px 10px;
+    text-align: center;
+}
+.order-table tr.last td {
+    border-bottom: 1px solid #000;
+}
+
+.o-f-g-name {
+    width: 120px;
+    text-align: center;
+}
+.o-f-g-width, 
+.o-f-g-height,
+.o-f-g-extra {
+    width: 50px;
+}
+input.o-f-g-quantity, 
+.o-f-g-uPrice, 
+.o-f-g-rubEdge, 
+.o-f-g-extra,
+.o-f-g-extraCost,
+.o-f-g-rate {
+    width: 30px;
+}
+.o-f-g-price {
+    font-weight: bold;
+}
+.o-f-g-result {
+    text-align: right;
+    font-weight: bold;
+}
+.o-f-g-result span,
+#order-f-p-totle-3 {
+    color: red;
+}
+.order-cash {
+    width: 150px;
+}
+
